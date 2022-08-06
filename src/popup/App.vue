@@ -1,0 +1,291 @@
+<template>
+  <div class="container">
+    <!-- header -->
+    <header>
+      <div class="header-title">今日事，今日毕</div>
+    </header>
+    <!-- card -->
+    <el-card class="box-card" shadow="hover">
+      <div slot="header" class="card-header">
+        <div class="card-time">{{ nowTime }}</div>
+        <el-button type="text" @click="handlerAddTask">
+          <i class="el-icon-circle-plus-outline card-add-icon"></i>
+          添加待办事项
+        </el-button>
+      </div>
+      <!-- todo list -->
+      <div v-if="list.length !== 0">
+        <draggable 
+          v-model="list" 
+          animation="300"
+          @start="onStart"
+          @end="onEnd"
+        >
+          <el-row v-for="(item, index) of list" :key="index">
+            <el-col>
+              <el-checkbox 
+                class="checkbox"
+                v-model="item.checked"
+              ></el-checkbox>
+              <label 
+                v-if="!item.isEdit"
+                class="checkbox-text" 
+                :class="{select: item.checked}"
+                @dblclick.stop="handlerEditTask(item)"
+              >
+                {{ item.label }}
+              </label> 
+              <el-input 
+                v-else
+                v-focus
+                class="text-input"
+                v-model.trim="item.label" 
+                placeholder="输入待办任务～"
+                size="mini"
+                @blur="handlerBlur(item)"
+                @keyup.enter.native="handlerBlur(item)" 
+              ></el-input>
+              <i class="el-icon-delete show-remove-icon" @click="handlerRemoveTask(item)"></i>
+            </el-col>
+          </el-row>
+        </draggable>
+      </div>
+      <!-- empty -->
+      <el-empty
+        v-else
+        :image-size="70"
+        description="暂无任务列表，快去创建吧～"
+      ></el-empty>
+    </el-card>
+    <!-- footer -->
+    <footer>
+      
+    </footer>
+  </div>
+</template>
+
+<script>
+import draggable from 'vuedraggable'
+import dayjs from 'dayjs';
+import { v4 as uuidv4 } from 'uuid';
+
+export default {
+  components:{
+    draggable
+  },
+  directives: {
+    focus: {
+      inserted: function (el) {
+        el.querySelector('input').focus()
+      }
+    }
+  },
+  data() {
+    return {
+      drag: false,
+      isShowAddTaskDialog: false,
+      list: [
+        // {
+        //   id: 1,
+        //   label: '今天看完一本书, 读到书的第三百三十页，然后做笔记～',
+        //   checked: false
+        // },
+        // {
+        //   id: 2,
+        //   label: '今天看完一本书～',
+        //   checked: false
+        // },
+        // {
+        //   id: 3,
+        //   label: '今天看完一本书～',
+        //   checked: false
+        // },
+        // {
+        //   id: 4,
+        //   label: '今天看完一本书～',
+        //   checked: false
+        // },
+        // {
+        //   id: 5,
+        //   label: '今天看完一本书～',
+        //   checked: false
+        // }
+      ],
+    }
+  },
+  computed: {
+    nowTime(){
+      return dayjs().format('YYYY/MM/DD');
+    }
+  },
+  methods:{
+    // Start Drag
+    onStart(){
+      this.drag = true;
+    },
+    // End Drag
+    onEnd(){
+      this.drag = false;
+    },
+    // Add Task
+    handlerAddTask(){
+      const id = uuidv4();
+      const task = {
+        id: id,
+        label: '',
+        isEdit: true,
+        checked: false
+      }
+      this.list.push(task);
+      // this.idToTaskMap[id] = task;
+      console.log(this.list);
+    },
+    // Remove Task
+    handlerRemoveTask(item){
+      const index = this.list.findIndex(el=>el.id === item.id);
+      this.list.splice(index, 1);
+    },
+    // Input Blur
+    handlerBlur(item){
+      if(item.label !== ''){
+        item.isEdit = false;
+      }else{
+        this.handlerRemoveTask(item);
+      }
+    },
+    // Edit Text
+    handlerEditTask(item){
+      if(!item.isEdit){
+        item.isEdit = true;
+        this.$nextTick(()=>{
+        })
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.container {
+  width: 350px;
+  padding: 0 10px;
+  background: #F2F6FC;
+  margin: 20px 0;
+  font-family: "微软雅黑";
+}
+.header-title {
+  font-size: 18px;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+}
+.todo-list {
+  border-radius: 6px;
+  background: #fff;
+  padding: 10px;
+  height: 300px;
+  overflow: auto;
+}
+/* Row */
+.el-row {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  padding: 0 10px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #E4E7ED;
+}
+/* Col */
+.el-col {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
+/* checkbox 文本 */
+.checkbox-text{
+  width: 100%;
+  color: #606266;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
+/*  移除 icon */
+.el-icon-delete{
+  display: none;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+  font-size: 14px;
+  color: #ccc;
+}
+/* 移除 icon hover */
+.el-col:hover .show-remove-icon{
+  display: block;
+}
+.select{
+  text-decoration: line-through;
+  color: #ccc;
+}
+.card-header{
+  display: flex;
+  justify-content: space-between;
+}
+.card-time{
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+.card-add-icon{
+  font-size: 15px;
+  font-weight: 500;
+}
+</style>
+<style>
+.el-checkbox {
+  width: 100%;
+}
+.checkbox{
+  width: auto !important;
+  margin-right: 10px !important;
+}
+/* 默认 checkbox 样式 */
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  border-color: #67C23A !important;
+  background-color: #67C23A !important;
+}
+.el-checkbox__input.is-checked+.el-checkbox__label{
+  color: #67C23A !important;
+}
+.el-checkbox__inner:hover{
+  border-color: #67C23A !important;
+}
+.el-checkbox__input.is-focus .el-checkbox__inner {
+  border-color: #67C23A !important;
+}
+/* card */
+.el-card__header{
+  padding: 0 20px !important;
+}
+.el-card__body{
+  padding: 10px 20px !important;
+  min-height: 200px !important;
+  max-height: 236px !important;
+  overflow-y: auto !important;
+}
+/* input */
+.el-input__inner{
+  border: 0 !important;
+  margin-left: -15px !important;
+  color: #606266 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+</style>

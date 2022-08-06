@@ -1,0 +1,17 @@
+{
+  "name": "todo-list",
+  "description": "一个任务清单谷歌插件。",
+  "version": null,
+  "manifest_version": 3,
+  "icons": {
+    "48": "icons/icon_48.png",
+    "128": "icons/icon_128.png"
+  },
+  "action": {
+    "default_title": "todo-list",
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

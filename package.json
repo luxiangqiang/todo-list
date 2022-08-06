@@ -1,0 +1,49 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "一个任务清单谷歌插件。",
+  "author": "luxiangqiang <luxiangqiang@reta-inc.com>",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "prettier": "prettier \"src/**/*.{js,vue}\"",
+    "prettier:write": "npm run prettier -- --write",
+    "build": "cross-env NODE_ENV=production webpack --hide-modules",
+    "build:dev": "cross-env NODE_ENV=development webpack --hide-modules",
+    "build-zip": "node scripts/build-zip.js",
+    "watch": "npm run build -- --watch",
+    "watch:dev": "cross-env HMR=true npm run build:dev -- --watch"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "uuid": "^8.3.2",
+    "vue": "^2.6.10",
+    "vuedraggable": "^2.24.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/runtime-corejs3": "^7.4.0",
+    "@types/chrome": "^0.0.74",
+    "archiver": "^3.0.0",
+    "babel-loader": "^8.0.2",
+    "copy-webpack-plugin": "^5.1.1",
+    "core-js": "^3.0.1",
+    "cross-env": "^5.2.0",
+    "css-loader": "^3.4.0",
+    "dayjs": "^1.11.4",
+    "ejs": "^2.6.1",
+    "element-ui": "^2.15.9",
+    "file-loader": "^5.0.2",
+    "less": "^4.1.3",
+    "less-loader": "^11.0.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "vue-loader": "^15.4.2",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-extension-reloader": "^1.1.0"
+  }
+}
