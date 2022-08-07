@@ -14,14 +14,14 @@
         </el-button>
       </div>
       <!-- todo list -->
-      <div v-if="list.length !== 0">
+      <div v-if="tasks.length !== 0">
         <draggable 
-          v-model="list" 
+          v-model="tasks" 
           animation="300"
           @start="onStart"
           @end="onEnd"
         >
-          <el-row v-for="(item, index) of list" :key="index">
+          <el-row v-for="(item, index) of tasks" :key="index">
             <el-col>
               <el-checkbox 
                 class="checkbox"
@@ -68,6 +68,7 @@
 import draggable from 'vuedraggable'
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
+import { setTasksListLocalstory, getTasksListLocalstory, updateTasksListLocalstory } from '../utils/index';
 
 export default {
   components:{
@@ -84,33 +85,7 @@ export default {
     return {
       drag: false,
       isShowAddTaskDialog: false,
-      list: [
-        // {
-        //   id: 1,
-        //   label: '今天看完一本书, 读到书的第三百三十页，然后做笔记～',
-        //   checked: false
-        // },
-        // {
-        //   id: 2,
-        //   label: '今天看完一本书～',
-        //   checked: false
-        // },
-        // {
-        //   id: 3,
-        //   label: '今天看完一本书～',
-        //   checked: false
-        // },
-        // {
-        //   id: 4,
-        //   label: '今天看完一本书～',
-        //   checked: false
-        // },
-        // {
-        //   id: 5,
-        //   label: '今天看完一本书～',
-        //   checked: false
-        // }
-      ],
+      tasks: [],
     }
   },
   computed: {
@@ -118,7 +93,16 @@ export default {
       return dayjs().format('YYYY/MM/DD');
     }
   },
+
+  created(){
+    this.init();
+  },
+
   methods:{
+    // Init
+    init(){
+      getTasksListLocalstory(this);
+    },
     // Start Drag
     onStart(){
       this.drag = true;
@@ -126,6 +110,7 @@ export default {
     // End Drag
     onEnd(){
       this.drag = false;
+      updateTasksListLocalstory(this.tasks);
     },
     // Add Task
     handlerAddTask(){
@@ -136,19 +121,19 @@ export default {
         isEdit: true,
         checked: false
       }
-      this.list.push(task);
-      // this.idToTaskMap[id] = task;
-      console.log(this.list);
+      this.tasks.push(task);
     },
     // Remove Task
     handlerRemoveTask(item){
-      const index = this.list.findIndex(el=>el.id === item.id);
-      this.list.splice(index, 1);
+      const index = this.tasks.findIndex(el=>el.id === item.id);
+      this.tasks.splice(index, 1);
+      updateTasksListLocalstory(this.tasks);
     },
     // Input Blur
     handlerBlur(item){
       if(item.label !== ''){
         item.isEdit = false;
+        setTasksListLocalstory(this.tasks);
       }else{
         this.handlerRemoveTask(item);
       }
@@ -157,8 +142,6 @@ export default {
     handlerEditTask(item){
       if(!item.isEdit){
         item.isEdit = true;
-        this.$nextTick(()=>{
-        })
       }
     }
   }
