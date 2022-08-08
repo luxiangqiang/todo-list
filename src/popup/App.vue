@@ -2,12 +2,31 @@
   <div class="container">
     <!-- header -->
     <header>
-      <div class="header-title">今日事，今日毕</div>
+      <div 
+        v-if="isShowTitle"
+        class="header-title" 
+        @dblclick="handlerDbclickTitle"
+      >
+        {{ title }}
+      </div>
+      <el-input 
+        v-else
+        v-focus
+        class="title-input"
+        v-model.trim="title" 
+        placeholder="请输入标题～"
+        size="medium"
+        @blur="handlerTitleInputBlur()"
+        @keyup.enter.native="handlerTitleInputBlur()" 
+      ></el-input>
     </header>
     <!-- card -->
-    <el-card class="box-card" shadow="hover">
+    <el-card class="box-card" shadow="never">
       <div slot="header" class="card-header">
-        <div class="card-time">{{ nowTime }}</div>
+        <div class="card-time">
+          <i class="iconfont icon-mdatepicker"></i>
+          {{ nowTime }}
+        </div>
         <el-button type="text" @click="handlerAddTask">
           <i class="el-icon-circle-plus-outline card-add-icon"></i>
           添加待办事项
@@ -26,6 +45,7 @@
               <el-checkbox 
                 class="checkbox"
                 v-model="item.checked"
+                @change="handlerCheckboxChange"
               ></el-checkbox>
               <label 
                 v-if="!item.isEdit"
@@ -39,7 +59,7 @@
                 v-else
                 v-focus
                 class="text-input"
-                v-model.trim="item.label" 
+                v-model="item.label" 
                 placeholder="输入待办任务～"
                 size="mini"
                 @blur="handlerBlur(item)"
@@ -68,8 +88,15 @@
 import draggable from 'vuedraggable'
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
-import { setTasksListLocalstory, getTasksListLocalstory, updateTasksListLocalstory } from '../utils/index';
+import { 
+  saveTitleLocalstory,
+  getTitleLocalstory,
+  setTasksListLocalstory, 
+  getTasksListLocalstory, 
+  updateTasksListLocalstory,
+} from '../utils/index';
 
+const defaultTitle = "标题";
 export default {
   components:{
     draggable
@@ -78,6 +105,7 @@ export default {
     focus: {
       inserted: function (el) {
         el.querySelector('input').focus()
+        el.querySelector('input').select()
       }
     }
   },
@@ -85,12 +113,17 @@ export default {
     return {
       drag: false,
       isShowAddTaskDialog: false,
+      title: defaultTitle,
+      isTitleEdit: false,
       tasks: [],
     }
   },
   computed: {
     nowTime(){
-      return dayjs().format('YYYY/MM/DD');
+      return dayjs().format('YYYY-MM-DD');
+    },
+    isShowTitle(){
+      return !this.isTitleEdit && this.title !== ''
     }
   },
 
@@ -102,6 +135,7 @@ export default {
     // Init
     init(){
       getTasksListLocalstory(this);
+      getTitleLocalstory(this);
     },
     // Start Drag
     onStart(){
@@ -111,6 +145,18 @@ export default {
     onEnd(){
       this.drag = false;
       updateTasksListLocalstory(this.tasks);
+    },
+    // Dbclick Title
+    handlerDbclickTitle(){
+      this.isTitleEdit = true;
+    },
+    // Save Title
+    handlerTitleInputBlur(){
+      const { title } = this;
+      if(title !== ''){
+        this.isTitleEdit = false;
+      }
+      saveTitleLocalstory(title);
     },
     // Add Task
     handlerAddTask(){
@@ -143,6 +189,10 @@ export default {
       if(!item.isEdit){
         item.isEdit = true;
       }
+    },
+    // Checkbox Change
+    handlerCheckboxChange(){
+      updateTasksListLocalstory(this.tasks);
     }
   }
 }
@@ -157,10 +207,16 @@ export default {
   font-family: "微软雅黑";
 }
 .header-title {
+  width: 350px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 18px;
-  padding-bottom: 10px;
+  padding:0 0 10px 10px;
   margin-bottom: 15px;
-  border-bottom: 1px solid #ddd;
+  color: #2a3a4a;
+  font-weight: 500;
+  border-bottom: 1px solid #E4E7ED;
 }
 .todo-list {
   border-radius: 6px;
@@ -222,8 +278,12 @@ export default {
 .card-time{
   display: flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
+  cursor: pointer;
+}
+.icon-mdatepicker{
+  margin-right: 5px;
 }
 .card-add-icon{
   font-size: 15px;
@@ -241,21 +301,21 @@ export default {
 /* 默认 checkbox 样式 */
 .el-checkbox__input.is-checked .el-checkbox__inner,
 .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-  border-color: #67C23A !important;
-  background-color: #67C23A !important;
+  border-color: #4ea30a !important;
+  background-color: #4ea30a !important;
 }
 .el-checkbox__input.is-checked+.el-checkbox__label{
-  color: #67C23A !important;
+  color: #4ea30a !important;
 }
 .el-checkbox__inner:hover{
-  border-color: #67C23A !important;
+  border-color: #4ea30a !important;
 }
 .el-checkbox__input.is-focus .el-checkbox__inner {
-  border-color: #67C23A !important;
+  border-color: #4ea30a !important;
 }
 /* card */
 .el-card__header{
-  padding: 0 20px !important;
+  padding: 0 15px 0 12px!important
 }
 .el-card__body{
   padding: 10px 20px !important;
@@ -264,11 +324,24 @@ export default {
   overflow-y: auto !important;
 }
 /* input */
-.el-input__inner{
+.box-card .el-input__inner{
   border: 0 !important;
   margin-left: -15px !important;
   color: #606266 !important;
   font-size: 14px !important;
+  font-weight: 500 !important;
+}
+/* titl input */
+.title-input .el-input__inner{
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  background-color: #F2F6FC !important;
+  font-size: 18px !important;
+  padding-bottom: 10px !important;
+  margin-bottom: 15px !important;
+  border-bottom: 1px solid #E4E7ED !important;
+  color: #2a3a4a !important;
   font-weight: 500 !important;
 }
 </style>

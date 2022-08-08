@@ -21,6 +21,7 @@ import 'element-ui/lib/theme-chalk/icon.css'
 import 'element-ui/lib/theme-chalk/empty.css'
 import 'element-ui/lib/theme-chalk/dialog.css'
 import 'element-ui/lib/theme-chalk/input.css'
+import '../fonts/iconfont.css'
 
 Vue.use(Button)
 .use(Radio)
