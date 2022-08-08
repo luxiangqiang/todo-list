@@ -1,11 +1,11 @@
 {
   "name": "todo-list",
-  "description": "一个任务清单谷歌插件。",
-  "version": null,
+  "description": "一个管理任务清单的谷歌插件。",
+  "version": "1.1.0",
   "manifest_version": 3,
   "icons": {
-    "48": "icons/icon_48.png",
-    "128": "icons/icon_128.png"
+    "48": "icons/todo_48.png",
+    "128": "icons/todo_128.png"
   },
   "action": {
     "default_title": "todo-list",
