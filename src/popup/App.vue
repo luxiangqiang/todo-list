@@ -131,6 +131,10 @@ export default {
     this.init();
   },
 
+  destroyed(){
+    setTasksListLocalstory(this.tasks);
+  },
+
   watch:{
     tasks:{
       deep: true,

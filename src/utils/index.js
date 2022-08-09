@@ -40,4 +40,3 @@ export const setBadgeText = (text='0', color='#4ea30a') => {
   chrome.action.setBadgeText({text: text});
   chrome.action.setBadgeBackgroundColor({color: color});
 }
-
