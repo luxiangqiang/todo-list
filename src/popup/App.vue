@@ -63,7 +63,6 @@
                 placeholder="输入待办任务～"
                 size="mini"
                 @blur="handlerBlur(item)"
-                @keyup.enter.native="handlerBlur(item)" 
               ></el-input>
               <i class="el-icon-delete show-remove-icon" @click="handlerRemoveTask(item)"></i>
             </el-col>

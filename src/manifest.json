@@ -4,6 +4,8 @@
   "version": "1.1.0",
   "manifest_version": 3,
   "icons": {
+    "16": "icons/todo_16.png",
+    "32": "icons/todo_32.png",
     "48": "icons/todo_48.png",
     "128": "icons/todo_128.png"
   },
