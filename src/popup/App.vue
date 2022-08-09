@@ -93,6 +93,7 @@ import {
   setTasksListLocalstory, 
   getTasksListLocalstory, 
   updateTasksListLocalstory,
+  setBadgeText
 } from '../utils/index';
 
 const defaultTitle = "标题";
@@ -128,6 +129,17 @@ export default {
 
   created(){
     this.init();
+  },
+
+  watch:{
+    tasks:{
+      deep: true,
+      immediate: true,
+      handler(tasks){
+        const undone = tasks.filter(el=>!el.checked);
+        setBadgeText(String(undone.length));
+      }
+    }
   },
 
   methods:{
