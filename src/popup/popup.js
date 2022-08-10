@@ -9,7 +9,9 @@ import {
   Card, 
   Empty,
   Dialog,
-  Input
+  Input,
+  Image
+  // Divider
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/button.css'
 import 'element-ui/lib/theme-chalk/radio.css'
@@ -21,6 +23,8 @@ import 'element-ui/lib/theme-chalk/icon.css'
 import 'element-ui/lib/theme-chalk/empty.css'
 import 'element-ui/lib/theme-chalk/dialog.css'
 import 'element-ui/lib/theme-chalk/input.css'
+import 'element-ui/lib/theme-chalk/image.css'
+// import 'element-ui/lib/theme-chalk/divider.css'
 import '../fonts/iconfont.css'
 
 Vue.use(Button)
@@ -32,6 +36,8 @@ Vue.use(Button)
 .use(Empty)
 .use(Dialog)
 .use(Input)
+.use(Image)
+// .use(Divider)
 
 /* eslint-disable no-new */
 new Vue({

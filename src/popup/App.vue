@@ -36,23 +36,22 @@
       <div v-if="tasks.length !== 0">
         <draggable 
           v-model="tasks"
-          delay="100"
-          animation="200"
+          delay="50"
+          animation="300"
           @start="onStart"
           @end="onEnd"
           @click.stop
         >
           <transition-group
             name="fade"
-            enter-active-class="custom-enter-active-class"
-            leave-active-class="custom-leave-active-class"
+            tag="div"
           >
-            <el-row v-for="(item, index) of tasks" :key="index">
+            <el-row v-for="(item, index) of tasks" :key="item.id">
               <el-col>
                 <el-checkbox 
                   class="checkbox"
                   v-model="item.checked"
-                  @change="handlerCheckboxChange"
+                  @change="handlerCheckboxChange(item)"
                 ></el-checkbox>
                 <label 
                   v-if="!item.isEdit"
@@ -85,10 +84,17 @@
       ></el-empty>
     </el-card>
     <!-- footer -->
-    <!-- <footer>
-      <i v-if="!isExpend" class="el-icon-caret-top expend" @click="handlerExpand">展开</i>
-      <i v-else class="el-icon-caret-bottom expend" @click="handlerExpand">收起</i>
-    </footer> -->
+    <footer>
+      <el-button size="mini" >我要吐槽</el-button>
+      <el-button size="mini" @click="handlerContactAuthor">联系作者</el-button>
+      <el-button size="mini" >打赏作者</el-button>
+      <el-button size="mini" >一键清空</el-button>
+    </footer>
+    <!-- Dialog -->
+    <AuthorDialog
+      v-if="isShowDialog"
+    >
+    </AuthorDialog>
   </div>
 </template>
 
@@ -96,6 +102,7 @@
 import draggable from 'vuedraggable'
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
+import AuthorDialog from './components/author-dialog.vue';
 import { 
   saveTitleLocalstory,
   getTitleLocalstory,
@@ -108,7 +115,8 @@ import {
 const defaultTitle = "标题";
 export default {
   components:{
-    draggable
+    draggable,
+    AuthorDialog
   },
   directives: {
     focus: {
@@ -124,6 +132,7 @@ export default {
       isShowAddTaskDialog: false,
       title: defaultTitle,
       isTitleEdit: false,
+      isShowDialog: false,
       tasks: [],
     }
   },
@@ -166,6 +175,10 @@ export default {
       this.drag = false;
       updateTasksListLocalstory(this.tasks);
     },
+    // Contact Author
+    handlerContactAuthor(){
+      this.isShowDialog = true;
+    },
     // Dbclick Title
     handlerDbclickTitle(){
       this.isTitleEdit = true;
@@ -187,7 +200,7 @@ export default {
         isEdit: true,
         checked: false
       }
-      this.tasks.push(task);
+      this.tasks.unshift(task);
     },
     // Remove Task
     handlerRemoveTask(item){
@@ -211,49 +224,51 @@ export default {
       }
     },
     // Checkbox Change
-    handlerCheckboxChange(){
+    handlerCheckboxChange(item){
+      if(item.checked){
+        const { tasks } = this;
+        let temp = []
+        const preIndex = tasks.findIndex(el=>el.id === item.id);
+        if(preIndex > 0){
+          const pre = tasks.slice(0, preIndex);
+          temp = pre
+        }
+        const nextArr = tasks.slice(preIndex + 1, tasks.length)
+        if(nextArr.length > 0){
+          temp.push(...nextArr)
+        }
+        temp.push(item)
+        this.tasks = temp;
+      }
       updateTasksListLocalstory(this.tasks);
     },
-    // Expand Tasks
-    // handlerExpand(){
-    //   this.isExpend = !this.isExpend;
-    // }
   }
 }
 </script>
 
 <style scoped>
-.custom-enter-active-class{
-  animation: fade-in .5s;
+/* 动画 */
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
 }
-.custom-leave-active-class{
-  animation: fade-out .5s;
+.fade-enter{
+  opacity: 0;
 }
-@keyframes fade-out {
-  0%{
-    opacity: 1;
-    transform: translateX(0);
-  }
-  100%{
-    opacity: 0;
-    transform: translateX(-10px);
-  }
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
 }
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-    transform: translateY(-10);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.fade-leave-active {
+  position: absolute;
 }
+
 .container {
   width: 350px;
   padding: 0 10px;
   background: #F2F6FC;
-  margin: 20px 0;
+  margin: 20px 0 10px 0;
   font-family: "微软雅黑";
 }
 .header-title {
@@ -343,15 +358,12 @@ export default {
   font-weight: 500;
 }
 footer{
-  margin-top: 5px;
+  margin-top: 10px;
   display: flex;
   font-size: 15px;
-  justify-content: center;
+  justify-content: space-between;
   color: #afacac;
 }
-/* .expend{
-  cursor: pointer;
-} */
 </style>
 <style>
 @import './common.css';
