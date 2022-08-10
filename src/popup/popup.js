@@ -10,7 +10,9 @@ import {
   Empty,
   Dialog,
   Input,
-  Image
+  Image,
+  RadioGroup,
+  RadioButton
   // Divider
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/button.css'
@@ -24,6 +26,8 @@ import 'element-ui/lib/theme-chalk/empty.css'
 import 'element-ui/lib/theme-chalk/dialog.css'
 import 'element-ui/lib/theme-chalk/input.css'
 import 'element-ui/lib/theme-chalk/image.css'
+import 'element-ui/lib/theme-chalk/radio-button.css'
+import 'element-ui/lib/theme-chalk/radio-group.css'
 // import 'element-ui/lib/theme-chalk/divider.css'
 import '../fonts/iconfont.css'
 
@@ -37,6 +41,8 @@ Vue.use(Button)
 .use(Dialog)
 .use(Input)
 .use(Image)
+.use(RadioGroup)
+.use(RadioButton)
 // .use(Divider)
 
 /* eslint-disable no-new */

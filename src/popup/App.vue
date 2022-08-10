@@ -87,12 +87,12 @@
     <footer>
       <el-button size="mini" >我要吐槽</el-button>
       <el-button size="mini" @click="handlerContactAuthor">联系作者</el-button>
-      <el-button size="mini" >打赏作者</el-button>
+      <el-button size="mini" @click="handlerRewardAuthor">打赏作者</el-button>
       <el-button size="mini" >一键清空</el-button>
     </footer>
     <!-- Dialog -->
     <AuthorDialog
-      v-if="isShowDialog"
+      ref="AuthorDialog"
     >
     </AuthorDialog>
   </div>
@@ -111,6 +111,10 @@ import {
   updateTasksListLocalstory,
   setBadgeText
 } from '../utils/index';
+import myWechart from '../icons/myWechart.png';
+import wechart from '../icons/wechat.png';
+import zhifubao from '../icons/zhifubao.png';
+import gongzhonghao from '../icons/gongzhonghao.png';
 
 const defaultTitle = "标题";
 export default {
@@ -132,7 +136,6 @@ export default {
       isShowAddTaskDialog: false,
       title: defaultTitle,
       isTitleEdit: false,
-      isShowDialog: false,
       tasks: [],
     }
   },
@@ -177,7 +180,11 @@ export default {
     },
     // Contact Author
     handlerContactAuthor(){
-      this.isShowDialog = true;
+      this.$refs['AuthorDialog'].open(['公众号','微信'],[gongzhonghao, myWechart]);
+    },
+    // Reward Author
+    handlerRewardAuthor(){
+      this.$refs['AuthorDialog'].open(['微信','支付宝'], [wechart, zhifubao]);
     },
     // Dbclick Title
     handlerDbclickTitle(){

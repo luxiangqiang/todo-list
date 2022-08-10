@@ -1,3 +1,12 @@
+.el-dialog__header{
+  display: none;
+}
+.el-dialog__body{
+  padding: 10px !important;
+}
+.el-dialog{
+  border-radius: 10px !important;
+}
 .el-checkbox {
   width: 100%;
 }
