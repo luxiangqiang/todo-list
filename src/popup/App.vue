@@ -35,38 +35,46 @@
       <!-- todo list -->
       <div v-if="tasks.length !== 0">
         <draggable 
-          v-model="tasks" 
-          animation="300"
+          v-model="tasks"
+          delay="100"
+          animation="200"
           @start="onStart"
           @end="onEnd"
+          @click.stop
         >
-          <el-row v-for="(item, index) of tasks" :key="index">
-            <el-col>
-              <el-checkbox 
-                class="checkbox"
-                v-model="item.checked"
-                @change="handlerCheckboxChange"
-              ></el-checkbox>
-              <label 
-                v-if="!item.isEdit"
-                class="checkbox-text" 
-                :class="{select: item.checked}"
-                @dblclick.stop="handlerEditTask(item)"
-              >
-                {{ item.label }}
-              </label> 
-              <el-input 
-                v-else
-                v-focus
-                class="text-input"
-                v-model="item.label" 
-                placeholder="输入待办任务～"
-                size="mini"
-                @blur="handlerBlur(item)"
-              ></el-input>
-              <i class="el-icon-delete show-remove-icon" @click="handlerRemoveTask(item)"></i>
-            </el-col>
-          </el-row>
+          <transition-group
+            name="fade"
+            enter-active-class="custom-enter-active-class"
+            leave-active-class="custom-leave-active-class"
+          >
+            <el-row v-for="(item, index) of tasks" :key="index">
+              <el-col>
+                <el-checkbox 
+                  class="checkbox"
+                  v-model="item.checked"
+                  @change="handlerCheckboxChange"
+                ></el-checkbox>
+                <label 
+                  v-if="!item.isEdit"
+                  class="checkbox-text" 
+                  :class="{select: item.checked}"
+                  @dblclick.stop="handlerEditTask(item)"
+                >
+                  {{ item.label }}
+                </label> 
+                <el-input 
+                  v-else
+                  v-focus
+                  class="text-input"
+                  v-model="item.label" 
+                  placeholder="输入待办任务～"
+                  size="mini"
+                  @blur="handlerBlur(item)"
+                ></el-input>
+                <i class="el-icon-delete show-remove-icon" @click="handlerRemoveTask(item)"></i>
+              </el-col>
+            </el-row>
+          </transition-group>
         </draggable>
       </div>
       <!-- empty -->
@@ -77,9 +85,10 @@
       ></el-empty>
     </el-card>
     <!-- footer -->
-    <footer>
-      
-    </footer>
+    <!-- <footer>
+      <i v-if="!isExpend" class="el-icon-caret-top expend" @click="handlerExpand">展开</i>
+      <i v-else class="el-icon-caret-bottom expend" @click="handlerExpand">收起</i>
+    </footer> -->
   </div>
 </template>
 
@@ -126,15 +135,12 @@ export default {
       return !this.isTitleEdit && this.title !== ''
     }
   },
-
   created(){
     this.init();
   },
-
   destroyed(){
     setTasksListLocalstory(this.tasks);
   },
-
   watch:{
     tasks:{
       deep: true,
@@ -145,7 +151,6 @@ export default {
       }
     }
   },
-
   methods:{
     // Init
     init(){
@@ -208,12 +213,42 @@ export default {
     // Checkbox Change
     handlerCheckboxChange(){
       updateTasksListLocalstory(this.tasks);
-    }
+    },
+    // Expand Tasks
+    // handlerExpand(){
+    //   this.isExpend = !this.isExpend;
+    // }
   }
 }
 </script>
 
 <style scoped>
+.custom-enter-active-class{
+  animation: fade-in .5s;
+}
+.custom-leave-active-class{
+  animation: fade-out .5s;
+}
+@keyframes fade-out {
+  0%{
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100%{
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-10);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .container {
   width: 350px;
   padding: 0 10px;
@@ -232,6 +267,7 @@ export default {
   color: #2a3a4a;
   font-weight: 500;
   border-bottom: 1px solid #E4E7ED;
+  user-select:none;
 }
 .todo-list {
   border-radius: 6px;
@@ -268,6 +304,7 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   cursor: pointer;
+  user-select:none;
 }
 /*  移除 icon */
 .el-icon-delete{
@@ -296,6 +333,7 @@ export default {
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
+  user-select:none;
 }
 .icon-mdatepicker{
   margin-right: 5px;
@@ -304,59 +342,17 @@ export default {
   font-size: 15px;
   font-weight: 500;
 }
+footer{
+  margin-top: 5px;
+  display: flex;
+  font-size: 15px;
+  justify-content: center;
+  color: #afacac;
+}
+/* .expend{
+  cursor: pointer;
+} */
 </style>
 <style>
-.el-checkbox {
-  width: 100%;
-}
-.checkbox{
-  width: auto !important;
-  margin-right: 10px !important;
-}
-/* 默认 checkbox 样式 */
-.el-checkbox__input.is-checked .el-checkbox__inner,
-.el-checkbox__input.is-indeterminate .el-checkbox__inner {
-  border-color: #4ea30a !important;
-  background-color: #4ea30a !important;
-}
-.el-checkbox__input.is-checked+.el-checkbox__label{
-  color: #4ea30a !important;
-}
-.el-checkbox__inner:hover{
-  border-color: #4ea30a !important;
-}
-.el-checkbox__input.is-focus .el-checkbox__inner {
-  border-color: #4ea30a !important;
-}
-/* card */
-.el-card__header{
-  padding: 0 15px 0 12px!important
-}
-.el-card__body{
-  padding: 10px 20px !important;
-  min-height: 200px !important;
-  max-height: 236px !important;
-  overflow-y: auto !important;
-}
-/* input */
-.box-card .el-input__inner{
-  border: 0 !important;
-  margin-left: -15px !important;
-  color: #606266 !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-}
-/* titl input */
-.title-input .el-input__inner{
-  border-top: 0 !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  background-color: #F2F6FC !important;
-  font-size: 18px !important;
-  padding-bottom: 10px !important;
-  margin-bottom: 15px !important;
-  border-bottom: 1px solid #E4E7ED !important;
-  color: #2a3a4a !important;
-  font-weight: 500 !important;
-}
+@import './common.css';
 </style>
