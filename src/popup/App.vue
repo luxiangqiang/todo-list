@@ -37,7 +37,6 @@
         <draggable 
           v-model="tasks"
           :disabled="draggableDisabled"
-          delay="50"
           animation="200"
           @start="onStart"
           @end="onEnd"
@@ -47,7 +46,11 @@
             name="fade"
             tag="div"
           >
-            <el-row v-for="(item, index) of tasks" :key="item.id">
+            <el-row 
+              :class="{'clear-transition': !isDrag}" 
+              v-for="item of tasks" 
+              :key="item.id"
+            >
               <el-col>
                 <el-checkbox 
                   class="checkbox"
@@ -154,6 +157,7 @@ export default {
   data() {
     return {
       drag: false,
+      isDrag: false,
       isShowAddTaskDialog: false,
       draggableDisabled: false,
       title: defaultTitle,
@@ -197,10 +201,12 @@ export default {
     // Start Drag
     onStart(){
       this.drag = true;
+      this.isDrag = true;
     },
     // End Drag
     onEnd(){
       this.drag = false;
+      this.isDrag = false;
       updateTasksListLocalstory(this.tasks);
     },
     // Clear Tasks
@@ -246,6 +252,7 @@ export default {
     },
     // Add Task
     handlerAddTask(){
+      this.isDrag = true;
       if(this.tasks.length > 49){
         alert('最多创建 50 个任务哦～')
         return;
@@ -260,6 +267,7 @@ export default {
     },
     // Remove Task
     handlerRemoveTask(item){
+      this.isDrag = true;
       const index = this.tasks.findIndex(el=>el.id === item.id);
       this.tasks.splice(index, 1);
       updateTasksListLocalstory(this.tasks);
@@ -283,6 +291,7 @@ export default {
     // Checkbox Change
     handlerCheckboxChange(item){
       if(item.checked){
+        this.isDrag = true;
         const { tasks } = this;
         let temp = []
         const preIndex = tasks.findIndex(el=>el.id === item.id);
@@ -313,6 +322,11 @@ export default {
 .fade-leave-active {
   transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
 }
+
+.clear-transition {
+  transition: unset !important;
+}
+
 .fade-enter{
   opacity: 0;
 }
@@ -323,7 +337,6 @@ export default {
 .fade-leave-active {
   position: absolute;
 }
-
 .container {
   width: 350px;
   padding: 0 10px;
@@ -378,7 +391,7 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  cursor: pointer;
+  cursor: move;
   user-select:none;
 }
 /*  移除 icon */

@@ -1,6 +1,6 @@
 {
   "name": "Todo List - 任务清单",
-  "description": "一个简单的本地化任务管理清单。",
+  "description": "一个简洁的本地化任务管理清单工具。A neat localized task management checklist tool.",
   "version": "1.1.0",
   "manifest_version": 3,
   "icons": {
