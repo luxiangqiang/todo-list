@@ -268,9 +268,11 @@ export default {
     // Remove Task
     handlerRemoveTask(item){
       this.isDrag = true;
-      const index = this.tasks.findIndex(el=>el.id === item.id);
-      this.tasks.splice(index, 1);
-      updateTasksListLocalstory(this.tasks);
+      this.$nextTick(()=>{
+        const index = this.tasks.findIndex(el=>el.id === item.id);
+        this.tasks.splice(index, 1);
+        updateTasksListLocalstory(this.tasks);
+      })
     },
     // Input Blur
     handlerBlur(item){
