@@ -38,7 +38,7 @@
           v-model="tasks"
           :disabled="draggableDisabled"
           delay="50"
-          animation="300"
+          animation="200"
           @start="onStart"
           @end="onEnd"
           @click.stop
