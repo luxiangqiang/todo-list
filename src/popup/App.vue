@@ -85,14 +85,27 @@
     </el-card>
     <!-- footer -->
     <footer>
-      <el-button size="mini" >我要吐槽</el-button>
-      <el-button size="mini" @click="handlerContactAuthor">联系作者</el-button>
-      <el-button size="mini" @click="handlerRewardAuthor">打赏作者</el-button>
-      <el-button size="mini" >一键清空</el-button>
+      <el-button size="mini" @click="handlerSourceCode">
+        <i class="iconfont icon-github"></i>
+        源码
+      </el-button>
+      <el-button size="mini" @click="handlerContactAuthor">
+        <i class="iconfont icon-weixin1"></i>
+        联系我
+      </el-button>
+      <el-button size="mini" @click="handlerRewardAuthor">
+        <i class="iconfont icon-dashang1"></i>
+        打赏
+      </el-button>
+      <el-button size="mini" @click="handlerClear"> 
+        <i class="iconfont icon-qingkong1"></i>
+        清空 
+      </el-button>
     </footer>
     <!-- Dialog -->
     <AuthorDialog
       ref="AuthorDialog"
+      :isShowFooter="isShowFooter"
     >
     </AuthorDialog>
   </div>
@@ -112,7 +125,7 @@ import {
   setBadgeText
 } from '../utils/index';
 import myWechart from '../icons/myWechart.png';
-import wechart from '../icons/wechat.png';
+import wechart from '../icons/wechart.png';
 import zhifubao from '../icons/zhifubao.png';
 import gongzhonghao from '../icons/gongzhonghao.png';
 
@@ -126,7 +139,6 @@ export default {
     focus: {
       inserted: function (el) {
         el.querySelector('input').focus()
-        el.querySelector('input').select()
       }
     }
   },
@@ -136,6 +148,7 @@ export default {
       isShowAddTaskDialog: false,
       title: defaultTitle,
       isTitleEdit: false,
+      isShowFooter: false,
       tasks: [],
     }
   },
@@ -178,12 +191,22 @@ export default {
       this.drag = false;
       updateTasksListLocalstory(this.tasks);
     },
+    // 一键清空
+    handlerClear(){
+      
+    },
+    // Look Source Code
+    handlerSourceCode(){
+      window.open('https://github.com/luxiangqiang/todo-list');
+    },
     // Contact Author
     handlerContactAuthor(){
+      this.isShowFooter = false;
       this.$refs['AuthorDialog'].open(['公众号','微信'],[gongzhonghao, myWechart]);
     },
     // Reward Author
     handlerRewardAuthor(){
+      this.isShowFooter = true;
       this.$refs['AuthorDialog'].open(['微信','支付宝'], [wechart, zhifubao]);
     },
     // Dbclick Title
@@ -217,7 +240,7 @@ export default {
     },
     // Input Blur
     handlerBlur(item){
-      if(item.label !== ''){
+      if(item.label.trim() !== ''){
         item.isEdit = false;
         setTasksListLocalstory(this.tasks);
       }else{
@@ -253,6 +276,9 @@ export default {
 }
 </script>
 
+<style>
+@import './common.css';
+</style>
 <style scoped>
 /* 动画 */
 .fade-move,
@@ -371,7 +397,22 @@ footer{
   justify-content: space-between;
   color: #afacac;
 }
+
+.icon-github{
+  font-size: 16px;
+  margin-right: 3px;
+}
+.icon-dashang1{
+  font-size: 14px;
+  margin-right: 3px;
+}
+.icon-weixin1{
+  font-size: 18px;
+  margin-right: 3px;
+}
+.icon-qingkong1{
+  font-size: 13px;
+  margin-right: 3px;
+}
 </style>
-<style>
-@import './common.css';
-</style>
+

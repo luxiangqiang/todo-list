@@ -4,22 +4,32 @@
     :show-header="false"
     :visible.sync="show"
   >
-  <div class="container">
-    <el-radio-group v-model="mode">
-      <el-radio-button :label="modes[0]"></el-radio-button>
-      <el-radio-button :label="modes[1]"></el-radio-button>
-    </el-radio-group>
-  </div>
-  <el-image
-    :src="imageUrl"
-    fit="fill"
-  >
-  </el-image>
+    <div class="container">
+      <el-radio-group v-model="mode">
+        <el-radio-button :label="modes[0]"></el-radio-button>
+        <el-radio-button :label="modes[1]"></el-radio-button>
+      </el-radio-group>
+    </div>
+    <el-image
+      :src="imageUrl"
+      fit="fill"
+    >
+    </el-image>
+    <div class="footer" v-if="isShowFooter">
+      <el-button size="mini"  @click="close">下次一定</el-button>
+      <el-button size="mini" type="success" plain @click="close">偷偷打赏</el-button>
+    </div>
   </el-dialog>
 </template>
 
 <script>
 export default {
+  props:{
+    isShowFooter:{
+      type: Boolean,
+      default: false
+    }
+  },
   computed:{
     imageUrl(){
       const { modes, mode, images } = this;
@@ -40,6 +50,9 @@ export default {
       this.modes = modes;
       this.images = images;
       this.show = true;
+    },
+    close(){
+      this.show = false;
     }
   }
 }
@@ -49,5 +62,8 @@ export default {
 .container{
   display: flex;
   justify-content: center;
+}
+.footer{
+  display: flex;
 }
 </style>

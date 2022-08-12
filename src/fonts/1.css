@@ -1,10 +1,9 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3574207 */
-  src: url('./iconfont.woff2?t=1659964473641') format('woff2'),
-       url('./iconfont.woff?t=1659964473641') format('woff'),
-       url('./iconfont.ttf?t=1659964473641') format('truetype');
+  src: url('iconfont.woff2?t=1660266144329') format('woff2'),
+       url('iconfont.woff?t=1660266144329') format('woff'),
+       url('iconfont.ttf?t=1660266144329') format('truetype');
 }
-
 
 .iconfont {
   font-family: "iconfont" !important;
@@ -49,5 +48,4 @@
 .icon-fuxuankuang-xuanzhong:before {
   content: "\ee34";
 }
-
 

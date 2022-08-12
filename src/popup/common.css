@@ -1,3 +1,10 @@
+
+.el-button > span{
+  display: flex;
+  align-items: center;
+}
+
+/* Dialog */
 .el-dialog__header{
   display: none;
 }
