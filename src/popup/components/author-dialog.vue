@@ -16,8 +16,8 @@
     >
     </el-image>
     <div class="footer" v-if="isShowFooter">
-      <el-button size="mini"  @click="close">下次一定</el-button>
-      <el-button size="mini" type="success" plain @click="close">偷偷打赏</el-button>
+      <el-button size="mini" type="warning" @click="close">偷偷打赏</el-button>
+      <el-button size="mini"  @click="close" class="cancal">下次一定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -65,5 +65,9 @@ export default {
 }
 .footer{
   display: flex;
+}
+
+.cancal:hover{
+  display: none;
 }
 </style>

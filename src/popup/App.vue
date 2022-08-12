@@ -36,6 +36,7 @@
       <div v-if="tasks.length !== 0">
         <draggable 
           v-model="tasks"
+          :disabled="draggableDisabled"
           delay="50"
           animation="300"
           @start="onStart"
@@ -93,11 +94,11 @@
         <i class="iconfont icon-weixin1"></i>
         联系我
       </el-button>
-      <el-button size="mini" @click="handlerRewardAuthor">
+      <el-button size="mini" @click="handlerRewardAuthor" class="reward">
         <i class="iconfont icon-dashang1"></i>
         打赏
       </el-button>
-      <el-button size="mini" @click="handlerClear"> 
+      <el-button size="mini" @click="handlerClear" class="clear"> 
         <i class="iconfont icon-qingkong1"></i>
         清空 
       </el-button>
@@ -108,6 +109,11 @@
       :isShowFooter="isShowFooter"
     >
     </AuthorDialog>
+    <ClearDialog
+      ref="ClearDialog"
+      @confirm="handlerConfirmClear"
+    >
+    </ClearDialog>
   </div>
 </template>
 
@@ -116,12 +122,14 @@ import draggable from 'vuedraggable'
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import AuthorDialog from './components/author-dialog.vue';
+import ClearDialog from './components/clear-dialog.vue'
 import { 
   saveTitleLocalstory,
   getTitleLocalstory,
   setTasksListLocalstory, 
   getTasksListLocalstory, 
   updateTasksListLocalstory,
+  clearTasksLocalstory,
   setBadgeText
 } from '../utils/index';
 import myWechart from '../icons/myWechart.png';
@@ -133,7 +141,8 @@ const defaultTitle = "标题";
 export default {
   components:{
     draggable,
-    AuthorDialog
+    AuthorDialog,
+    ClearDialog
   },
   directives: {
     focus: {
@@ -146,6 +155,7 @@ export default {
     return {
       drag: false,
       isShowAddTaskDialog: false,
+      draggableDisabled: false,
       title: defaultTitle,
       isTitleEdit: false,
       isShowFooter: false,
@@ -191,9 +201,20 @@ export default {
       this.drag = false;
       updateTasksListLocalstory(this.tasks);
     },
-    // 一键清空
+    // Clear Tasks
     handlerClear(){
-      
+      this.$refs['ClearDialog'].open();
+    },
+    // Confirm Tasks
+    handlerConfirmClear(onlyDeleteDone){
+      const { tasks } = this;
+      if(onlyDeleteDone){
+        this.tasks = tasks.filter(el=> !el.checked);
+        updateTasksListLocalstory(this.tasks);
+      }else{
+        this.tasks = [];
+        clearTasksLocalstory();
+      }
     },
     // Look Source Code
     handlerSourceCode(){
@@ -223,14 +244,13 @@ export default {
     },
     // Add Task
     handlerAddTask(){
-      const id = uuidv4();
-      const task = {
-        id: id,
+      this.draggableDisabled = true;
+      this.tasks.unshift({
+        id: uuidv4(),
         label: '',
         isEdit: true,
         checked: false
-      }
-      this.tasks.unshift(task);
+      });
     },
     // Remove Task
     handlerRemoveTask(item){
@@ -246,6 +266,7 @@ export default {
       }else{
         this.handlerRemoveTask(item);
       }
+      this.draggableDisabled = false;
     },
     // Edit Text
     handlerEditTask(item){
@@ -400,19 +421,29 @@ footer{
 
 .icon-github{
   font-size: 16px;
-  margin-right: 3px;
 }
 .icon-dashang1{
   font-size: 14px;
-  margin-right: 3px;
 }
 .icon-weixin1{
   font-size: 18px;
-  margin-right: 3px;
 }
 .icon-qingkong1{
   font-size: 13px;
-  margin-right: 3px;
 }
+
+.reward:hover .icon-dashang1{
+  -webkit-transform:rotateY(360deg);
+  transform:rotateY(360deg);
+  -webkit-transition:-webkit-transform .5s;
+  transition:transform .5s;
+}
+.clear:hover .icon-qingkong1{
+  -webkit-transform:rotate(360deg);
+  transform:rotate(360deg);
+  -webkit-transition:-webkit-transform .5s;
+  transition:transform .5s;
+}
+
 </style>
 

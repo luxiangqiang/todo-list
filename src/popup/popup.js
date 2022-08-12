@@ -12,7 +12,9 @@ import {
   Input,
   Image,
   RadioGroup,
-  RadioButton
+  RadioButton,
+  // MessageBox,
+  // Message
   // Divider
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/button.css'
@@ -28,6 +30,8 @@ import 'element-ui/lib/theme-chalk/input.css'
 import 'element-ui/lib/theme-chalk/image.css'
 import 'element-ui/lib/theme-chalk/radio-button.css'
 import 'element-ui/lib/theme-chalk/radio-group.css'
+// import 'element-ui/lib/theme-chalk/message-box.css'
+import 'element-ui/lib/theme-chalk/message.css'
 // import 'element-ui/lib/theme-chalk/divider.css'
 import '../fonts/iconfont.css'
 
@@ -43,6 +47,8 @@ Vue.use(Button)
 .use(Image)
 .use(RadioGroup)
 .use(RadioButton)
+// .use(Message)
+// .use(MessageBox)
 // .use(Divider)
 
 /* eslint-disable no-new */

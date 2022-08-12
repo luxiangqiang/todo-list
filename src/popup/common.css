@@ -3,6 +3,9 @@
   display: flex;
   align-items: center;
 }
+.el-button > span > i{
+  margin-right: 3px;
+}
 
 /* Dialog */
 .el-dialog__header{
