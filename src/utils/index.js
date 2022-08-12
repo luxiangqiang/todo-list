@@ -16,8 +16,15 @@ export const getTasksListLocalstory  = (self) => {
 
 // Update Tasks 
 export const updateTasksListLocalstory  = (tasks) => {
-  chrome.storage.sync.set({'tasks': tasks}, function() {
+  chrome.storage.sync.set({'tasks': tasks}, ()=> {
     console.log('🚀 Update Tasks Success～');
+  })
+}
+
+// Clear Tasks
+export const clearTasksLocalstory  = () => {
+  chrome.storage.sync.remove('tasks',()=>{
+    console.log('🧹 Clear Tasks Success～');
   })
 }
 
@@ -36,6 +43,7 @@ export const getTitleLocalstory  = (self) => {
   });
 }
 
+// SetBadgeText
 export const setBadgeText = (text='0', color='#4ea30a') => {
   chrome.action.setBadgeText({text: text});
   chrome.action.setBadgeBackgroundColor({color: color});
