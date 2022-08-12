@@ -98,7 +98,7 @@
         <i class="iconfont icon-dashang1"></i>
         打赏
       </el-button>
-      <el-button size="mini" @click="handlerClear" class="clear"> 
+      <el-button size="mini" @click="handlerClear" :disabled="clearDisabled" class="clear"> 
         <i class="iconfont icon-qingkong1"></i>
         清空 
       </el-button>
@@ -137,7 +137,7 @@ import wechart from '../icons/wechart.png';
 import zhifubao from '../icons/zhifubao.png';
 import gongzhonghao from '../icons/gongzhonghao.png';
 
-const defaultTitle = "标题";
+const defaultTitle = "";
 export default {
   components:{
     draggable,
@@ -159,6 +159,7 @@ export default {
       title: defaultTitle,
       isTitleEdit: false,
       isShowFooter: false,
+      clearDisabled: false,
       tasks: [],
     }
   },
@@ -176,11 +177,12 @@ export default {
   destroyed(){
     setTasksListLocalstory(this.tasks);
   },
-  watch:{
+  watch:{  
     tasks:{
       deep: true,
       immediate: true,
       handler(tasks){
+        this.clearDisabled = tasks.length === 0;
         const undone = tasks.filter(el=>!el.checked);
         setBadgeText(String(undone.length));
       }
@@ -244,6 +246,10 @@ export default {
     },
     // Add Task
     handlerAddTask(){
+      if(this.tasks.length > 49){
+        alert('最多创建 50 个任务哦～')
+        return;
+      }
       this.draggableDisabled = true;
       this.tasks.unshift({
         id: uuidv4(),

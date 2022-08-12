@@ -38,6 +38,9 @@ export const saveTitleLocalstory  = (title) => {
 // Get Title
 export const getTitleLocalstory  = (self) => {
   chrome.storage.sync.get('title', (result) => {
+    if(!result?.title){
+      self.isTitleEdit = true;
+    }
     self.title = result?.title || '';
     console.log('👌 Get Title Success～')
   });
