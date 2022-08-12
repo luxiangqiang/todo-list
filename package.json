@@ -1,7 +1,7 @@
 {
   "name": "todo-list",
   "version": "1.0.0",
-  "description": "一个任务清单谷歌插件。",
+  "description": "一个简洁的本地化任务管理清单工具。A concise localization task list management tool.",
   "author": "luxiangqiang <luxiangqiang@reta-inc.com>",
   "engines": {
     "node": ">=10"
