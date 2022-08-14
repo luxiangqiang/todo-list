@@ -45,7 +45,16 @@
 
 ## 使用
 
-### 1、安装
+### 1、下载
+
+进入谷歌应用商店，搜索【Todo List - 任务清单】，点击添加至 Chrome。
+
+<p align="center">
+   <img width="700" src="https://user-images.githubusercontent.com/38695411/184521118-2de14966-49bd-4cf4-86fb-81d684a5f7c5.png" alt="ToDo List">
+</p>
+
+
+### 2、安装
 使用方式非常简单，下载安装插件后，点击右上角的扩展图标，然后点击固定按钮，就可以在插件栏显示了。
 
 
@@ -53,13 +62,13 @@
   <img width="450" src="https://user-images.githubusercontent.com/38695411/184520073-c08a6884-bf63-4a53-b384-921085fe1c11.png" alt="ToDo List">
 </p>
 
-### 2、自定义标题
+### 3、自定义标题
 可在最上方输入自定义标题文字。
 <p align="center">
   <img width="450" src="https://user-images.githubusercontent.com/38695411/184520162-bfe98c06-6c11-4ce1-b9f8-70beb932a7b0.png" alt="ToDo List">
 </p>
 
-### 3、添加编辑任务事项
+### 4、添加编辑任务事项
 点击添加任务事项的按钮，添加你的第一个任务事项。输入任务事项，输入框失焦后则创建完成。（如有需要，可以双击任务事项可进行再次编辑）
 
 <p align="center">
@@ -67,7 +76,7 @@
   <img width="450" src="https://user-images.githubusercontent.com/38695411/184520226-fbdf893b-3975-41b9-a145-d22d0627e6c8.png" alt="ToDo List">
 </p>
 
-### 4、拖动排序
+### 5、拖动排序
 
 我们可通过将鼠标放在任务事项点击拖动进行任务排序。
 
@@ -75,7 +84,7 @@
   <img width="450" src="https://user-images.githubusercontent.com/38695411/184520292-8ddcfe36-1760-41c0-87b0-9a0434f06567.png" alt="ToDo List">
 </p>
 
-### 4、实时显示待完成任务数量
+### 6、实时显示待完成任务数量
 
 在谷歌的扩展栏，图标右下角实时显示待完成任务事项的数量。
 
@@ -83,7 +92,7 @@
 <img width="450" src="https://user-images.githubusercontent.com/38695411/184520421-7ba4efb3-8f89-4bf4-8aaf-9b9e3033bf3b.png" alt="ToDo List">
 </p>
 
-### 5、完成事项
+### 7、完成事项
 
 完成事项后，直接对该事项进行打勾处理，会自动排序到最后。
 
@@ -91,7 +100,7 @@
   <img width="450" src="https://user-images.githubusercontent.com/38695411/184520326-fb993a31-e182-4164-a92e-754181792160.png" alt="ToDo List">
 </p>
 
-### 6、删除任务事项
+### 8、删除任务事项
 
 也可对任务事项进行删除操作，鼠标放在该任务文字上方，就会出现删除按钮。
 
@@ -99,7 +108,7 @@
   <img width="450" src="https://user-images.githubusercontent.com/38695411/184520358-8200446a-5b51-446f-897a-192aebfefecc.png" alt="ToDo List">
 </p>
 
-### 7、一键清理
+### 9、一键清理
 
 如果当天任务全部完成，即可进行一键清除(默认只清除完成事项)。
 
