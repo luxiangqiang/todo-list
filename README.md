@@ -42,6 +42,12 @@
 为什么说我称它为是一个本地化的任务清单管理工具呢？我发现市面上的 ToDo List 功能太多，就拿登陆来说，有时候由于网络延迟，登录半天都登陆不上，所以我在自己的 ToDo List 直接删除了登陆，
 安装插件直接就可以创建任务，数据直接保存在本地，当天事情当天完成。谷歌插件做 ToDo List 的一个好处就是用的时候点开，不用的时候直接自动隐藏，方便快捷，不用放太多的注意力在上边，可以说是一个简化版本的 ToDo List。
 
+## 下载地址
+
+[谷歌商店](https://chrome.google.com/webstore/detail/todo-list-%E4%BB%BB%E5%8A%A1%E6%B8%85%E5%8D%95/aagnabmifenemjibmlmeemijhnfeohcf?hl=zh-CN)
+
+若无法下载，尝试其他下载地址：[下载地址1](https://github.com/luxiangqiang/todo-list/releases/tag/v1.0.0) [下载地址2](https://chrome.google.com/webstore/detail/todo-list-%E4%BB%BB%E5%8A%A1%E6%B8%85%E5%8D%95/aagnabmifenemjibmlmeemijhnfeohcf?hl=zh-CN)
+
 
 ## 使用
 
@@ -115,10 +121,6 @@
 <p align="center">
   <img width="450" src="https://user-images.githubusercontent.com/38695411/184520374-8ab50cd8-0c0a-483d-9468-47e602449b57.png" alt="ToDo List">
 </p>
-
-## 下载地址
-
-[谷歌商店](https://chrome.google.com/webstore/detail/todo-list-%E4%BB%BB%E5%8A%A1%E6%B8%85%E5%8D%95/aagnabmifenemjibmlmeemijhnfeohcf?hl=zh-CN)
 
 ## 更新日志
 
