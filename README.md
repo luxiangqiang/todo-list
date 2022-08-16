@@ -44,7 +44,7 @@
 
 ## 下载地址
 
-[谷歌商店](https://chrome.google.com/webstore/detail/todo-list-%E4%BB%BB%E5%8A%A1%E6%B8%85%E5%8D%95/aagnabmifenemjibmlmeemijhnfeohcf?hl=zh-CN)
+[chrome 应用市场](https://chrome.google.com/webstore/detail/todo-list-%E4%BB%BB%E5%8A%A1%E6%B8%85%E5%8D%95/aagnabmifenemjibmlmeemijhnfeohcf?hl=zh-CN)
 
 若无法下载，尝试其他下载地址：[下载地址1](https://github.com/luxiangqiang/todo-list/releases/tag/v1.0.0) [下载地址2](https://chrome.google.com/webstore/detail/todo-list-%E4%BB%BB%E5%8A%A1%E6%B8%85%E5%8D%95/aagnabmifenemjibmlmeemijhnfeohcf?hl=zh-CN)
 
@@ -126,4 +126,4 @@
 
 ### V1.0.0 2022-08-13
 
-- ToDo List - 任务清单（V1.0.0） 正式上架谷歌应用商店 
+- ToDo List - 任务清单（V1.0.0） 正式上架 chrome 应用市场 
