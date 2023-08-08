@@ -2,23 +2,11 @@
   <div class="container">
     <!-- header -->
     <header>
-      <div 
-        v-if="isShowTitle"
-        class="header-title" 
-        @dblclick="handlerDbclickTitle"
-      >
+      <div v-if="isShowTitle" class="header-title" @dblclick="handlerDbclickTitle">
         {{ title }}
       </div>
-      <el-input 
-        v-else
-        v-focus
-        class="title-input"
-        v-model.trim="title" 
-        placeholder="请输入标题～"
-        size="medium"
-        @blur="handlerTitleInputBlur()"
-        @keyup.enter.native="handlerTitleInputBlur()" 
-      ></el-input>
+      <el-input v-else v-focus class="title-input" v-model.trim="title" placeholder="请输入标题～" size="medium"
+        @blur="handlerTitleInputBlur()" @keyup.enter.native="handlerTitleInputBlur()"></el-input>
     </header>
     <!-- card -->
     <el-card class="box-card" shadow="never">
@@ -34,46 +22,19 @@
       </div>
       <!-- todo list -->
       <div v-if="tasks.length !== 0">
-        <draggable 
-          v-model="tasks"
-          :disabled="draggableDisabled"
-          animation="200"
-          @start="onStart"
-          @end="onEnd"
-          @click.stop
-        >
-          <transition-group
-            name="fade"
-            tag="div"
-          >
-            <el-row 
-              :class="{'clear-transition': !isDrag}" 
-              v-for="item of tasks" 
-              :key="item.id"
-            >
+        <draggable v-model="tasks" :disabled="draggableDisabled" animation="200" @start="onStart" @end="onEnd"
+          @click.stop>
+          <transition-group name="fade" tag="div">
+            <el-row :class="{ 'clear-transition': !isDrag }" v-for="item of tasks" :key="item.id">
               <el-col>
-                <el-checkbox 
-                  class="checkbox"
-                  v-model="item.checked"
-                  @change="handlerCheckboxChange(item)"
-                ></el-checkbox>
-                <label 
-                  v-if="!item.isEdit"
-                  class="checkbox-text" 
-                  :class="{select: item.checked}"
-                  @dblclick.stop="handlerEditTask(item)"
-                >
-                  {{ item.label }}
-                </label> 
-                <el-input 
-                  v-else
-                  v-focus
-                  class="text-input"
-                  v-model="item.label" 
-                  placeholder="输入待办任务～"
-                  size="mini"
-                  @blur="handlerBlur(item)"
-                ></el-input>
+                <el-checkbox class="checkbox" v-model="item.checked" @change="handlerCheckboxChange(item)"></el-checkbox>
+                <el-tooltip v-if="!item.isEdit" class="item" effect="light" :content="item.label" placement="top"
+                  :open-delay="500">
+                  <label class="checkbox-text" :class="{ select: item.checked }" @dblclick.stop="handlerEditTask(item)">
+                    {{ item.label }} </label>
+                </el-tooltip>
+                <el-input v-else v-focus class="text-input" v-model="item.label" placeholder="输入待办任务～" size="mini"
+                  @blur="handlerBlur(item)"></el-input>
                 <i class="el-icon-delete show-remove-icon" @click="handlerRemoveTask(item)"></i>
               </el-col>
             </el-row>
@@ -81,11 +42,7 @@
         </draggable>
       </div>
       <!-- empty -->
-      <el-empty
-        v-else
-        :image-size="70"
-        description="暂无任务列表，快去创建吧～"
-      ></el-empty>
+      <el-empty v-else :image-size="70" description="暂无任务列表，快去创建吧～"></el-empty>
     </el-card>
     <!-- footer -->
     <footer>
@@ -101,21 +58,15 @@
         <i class="iconfont icon-dashang1"></i>
         打赏
       </el-button>
-      <el-button size="mini" @click="handlerClear" :disabled="clearDisabled" class="clear"> 
+      <el-button size="mini" @click="handlerClear" :disabled="clearDisabled" class="clear">
         <i class="iconfont icon-qingkong1"></i>
-        清空 
+        清空
       </el-button>
     </footer>
     <!-- Dialog -->
-    <AuthorDialog
-      ref="AuthorDialog"
-      :isShowFooter="isShowFooter"
-    >
+    <AuthorDialog ref="AuthorDialog" :isShowFooter="isShowFooter">
     </AuthorDialog>
-    <ClearDialog
-      ref="ClearDialog"
-      @confirm="handlerConfirmClear"
-    >
+    <ClearDialog ref="ClearDialog" @confirm="handlerConfirmClear">
     </ClearDialog>
   </div>
 </template>
@@ -126,11 +77,11 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import AuthorDialog from './components/author-dialog.vue';
 import ClearDialog from './components/clear-dialog.vue'
-import { 
+import {
   saveTitleLocalstory,
   getTitleLocalstory,
-  setTasksListLocalstory, 
-  getTasksListLocalstory, 
+  setTasksListLocalstory,
+  getTasksListLocalstory,
   updateTasksListLocalstory,
   clearTasksLocalstory,
   setBadgeText
@@ -142,7 +93,7 @@ import gongzhonghao from '../icons/gongzhonghao.png';
 
 const defaultTitle = "";
 export default {
-  components:{
+  components: {
     draggable,
     AuthorDialog,
     ClearDialog
@@ -168,92 +119,92 @@ export default {
     }
   },
   computed: {
-    nowTime(){
+    nowTime() {
       return dayjs().format('YYYY-MM-DD');
     },
-    isShowTitle(){
+    isShowTitle() {
       return !this.isTitleEdit && this.title !== ''
     }
   },
-  created(){
+  created() {
     this.init();
   },
-  destroyed(){
+  destroyed() {
     setTasksListLocalstory(this.tasks);
   },
-  watch:{  
-    tasks:{
+  watch: {
+    tasks: {
       deep: true,
       immediate: true,
-      handler(tasks){
+      handler(tasks) {
         this.clearDisabled = tasks.length === 0;
-        const undone = tasks.filter(el=>!el.checked);
+        const undone = tasks.filter(el => !el.checked);
         setBadgeText(String(undone.length));
       }
     }
   },
-  methods:{
+  methods: {
     // Init
-    init(){
+    init() {
       getTasksListLocalstory(this);
       getTitleLocalstory(this);
     },
     // Start Drag
-    onStart(){
+    onStart() {
       this.drag = true;
       this.isDrag = true;
     },
     // End Drag
-    onEnd(){
+    onEnd() {
       this.drag = false;
       this.isDrag = false;
       updateTasksListLocalstory(this.tasks);
     },
     // Clear Tasks
-    handlerClear(){
+    handlerClear() {
       this.$refs['ClearDialog'].open();
     },
     // Confirm Tasks
-    handlerConfirmClear(onlyDeleteDone){
+    handlerConfirmClear(onlyDeleteDone) {
       const { tasks } = this;
-      if(onlyDeleteDone){
-        this.tasks = tasks.filter(el=> !el.checked);
+      if (onlyDeleteDone) {
+        this.tasks = tasks.filter(el => !el.checked);
         updateTasksListLocalstory(this.tasks);
-      }else{
+      } else {
         this.tasks = [];
         clearTasksLocalstory();
       }
     },
     // Look Source Code
-    handlerSourceCode(){
+    handlerSourceCode() {
       window.open('https://github.com/luxiangqiang/todo-list');
     },
     // Contact Author
-    handlerContactAuthor(){
+    handlerContactAuthor() {
       this.isShowFooter = false;
-      this.$refs['AuthorDialog'].open(['公众号','微信'],[gongzhonghao, myWechart]);
+      this.$refs['AuthorDialog'].open(['公众号', '微信'], [gongzhonghao, myWechart]);
     },
     // Reward Author
-    handlerRewardAuthor(){
+    handlerRewardAuthor() {
       this.isShowFooter = true;
-      this.$refs['AuthorDialog'].open(['微信','支付宝'], [wechart, zhifubao]);
+      this.$refs['AuthorDialog'].open(['微信', '支付宝'], [wechart, zhifubao]);
     },
     // Dbclick Title
-    handlerDbclickTitle(){
+    handlerDbclickTitle() {
       this.isTitleEdit = true;
     },
     // Save Title
-    handlerTitleInputBlur(){
+    handlerTitleInputBlur() {
       const { title } = this;
-      if(title !== ''){
+      if (title !== '') {
         this.isTitleEdit = false;
       }
       saveTitleLocalstory(title);
     },
     // Add Task
-    handlerAddTask(){
+    handlerAddTask() {
       this.isDrag = true;
-      if(this.tasks.length > 49){
+      if (this.tasks.length > 49) {
         alert('最多创建 50 个任务哦～')
         return;
       }
@@ -266,43 +217,43 @@ export default {
       });
     },
     // Remove Task
-    handlerRemoveTask(item){
+    handlerRemoveTask(item) {
       this.isDrag = true;
-      this.$nextTick(()=>{
-        const index = this.tasks.findIndex(el=>el.id === item.id);
+      this.$nextTick(() => {
+        const index = this.tasks.findIndex(el => el.id === item.id);
         this.tasks.splice(index, 1);
         updateTasksListLocalstory(this.tasks);
       })
     },
     // Input Blur
-    handlerBlur(item){
-      if(item.label.trim() !== ''){
+    handlerBlur(item) {
+      if (item.label.trim() !== '') {
         item.isEdit = false;
         setTasksListLocalstory(this.tasks);
-      }else{
+      } else {
         this.handlerRemoveTask(item);
       }
       this.draggableDisabled = false;
     },
     // Edit Text
-    handlerEditTask(item){
-      if(!item.isEdit){
+    handlerEditTask(item) {
+      if (!item.isEdit) {
         item.isEdit = true;
       }
     },
     // Checkbox Change
-    handlerCheckboxChange(item){
-      if(item.checked){
+    handlerCheckboxChange(item) {
+      if (item.checked) {
         this.isDrag = true;
         const { tasks } = this;
         let temp = []
-        const preIndex = tasks.findIndex(el=>el.id === item.id);
-        if(preIndex > 0){
+        const preIndex = tasks.findIndex(el => el.id === item.id);
+        if (preIndex > 0) {
           const pre = tasks.slice(0, preIndex);
           temp = pre
         }
         const nextArr = tasks.slice(preIndex + 1, tasks.length)
-        if(nextArr.length > 0){
+        if (nextArr.length > 0) {
           temp.push(...nextArr)
         }
         temp.push(item)
@@ -329,16 +280,19 @@ export default {
   transition: unset !important;
 }
 
-.fade-enter{
+.fade-enter {
   opacity: 0;
 }
+
 .fade-leave-to {
   opacity: 0;
   transform: translateX(-10px);
 }
+
 .fade-leave-active {
   position: absolute;
 }
+
 .container {
   width: 350px;
   padding: 0 10px;
@@ -346,19 +300,21 @@ export default {
   margin: 20px 0 10px 0;
   font-family: "微软雅黑";
 }
+
 .header-title {
   width: 350px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 18px;
-  padding:0 0 10px 10px;
+  padding: 0 0 10px 10px;
   margin-bottom: 15px;
   color: #2a3a4a;
   font-weight: 500;
   border-bottom: 1px solid #E4E7ED;
-  user-select:none;
+  user-select: none;
 }
+
 .todo-list {
   border-radius: 6px;
   background: #fff;
@@ -366,6 +322,7 @@ export default {
   height: 300px;
   overflow: auto;
 }
+
 /* Row */
 .el-row {
   height: 35px;
@@ -376,6 +333,7 @@ export default {
   margin-bottom: 5px;
   border-bottom: 1px solid #E4E7ED;
 }
+
 /* Col */
 .el-col {
   position: relative;
@@ -384,8 +342,9 @@ export default {
   align-items: center;
   padding-right: 20px;
 }
+
 /* checkbox 文本 */
-.checkbox-text{
+.checkbox-text {
   width: 100%;
   color: #606266;
   font-size: 14px;
@@ -394,10 +353,11 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   cursor: move;
-  user-select:none;
+  user-select: none;
 }
+
 /*  移除 icon */
-.el-icon-delete{
+.el-icon-delete {
   display: none;
   position: absolute;
   right: 0;
@@ -405,34 +365,41 @@ export default {
   font-size: 14px;
   color: #ccc;
 }
+
 /* 移除 icon hover */
-.el-col:hover .show-remove-icon{
+.el-col:hover .show-remove-icon {
   display: block;
 }
-.select{
+
+.select {
   text-decoration: line-through;
   color: #ccc;
 }
-.card-header{
+
+.card-header {
   display: flex;
   justify-content: space-between;
 }
-.card-time{
+
+.card-time {
   display: flex;
   align-items: center;
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
-  user-select:none;
+  user-select: none;
 }
-.icon-mdatepicker{
+
+.icon-mdatepicker {
   margin-right: 5px;
 }
-.card-add-icon{
+
+.card-add-icon {
   font-size: 15px;
   font-weight: 500;
 }
-footer{
+
+footer {
   margin-top: 10px;
   display: flex;
   font-size: 15px;
@@ -440,31 +407,34 @@ footer{
   color: #afacac;
 }
 
-.icon-github{
+.icon-github {
   font-size: 16px;
 }
-.icon-dashang1{
+
+.icon-dashang1 {
   font-size: 14px;
 }
-.icon-weixin1{
+
+.icon-weixin1 {
   font-size: 18px;
 }
-.icon-qingkong1{
+
+.icon-qingkong1 {
   font-size: 13px;
 }
 
-.reward:hover .icon-dashang1{
-  -webkit-transform:rotateY(360deg);
-  transform:rotateY(360deg);
-  -webkit-transition:-webkit-transform .5s;
-  transition:transform .5s;
-}
-.clear:hover .icon-qingkong1{
-  -webkit-transform:rotate(360deg);
-  transform:rotate(360deg);
-  -webkit-transition:-webkit-transform .5s;
-  transition:transform .5s;
+.reward:hover .icon-dashang1 {
+  -webkit-transform: rotateY(360deg);
+  transform: rotateY(360deg);
+  -webkit-transition: -webkit-transform .5s;
+  transition: transform .5s;
 }
 
+.clear:hover .icon-qingkong1 {
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+  -webkit-transition: -webkit-transform .5s;
+  transition: transform .5s;
+}
 </style>
 
