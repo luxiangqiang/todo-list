@@ -1,7 +1,7 @@
 {
   "name": "Todo List - 任务清单",
   "description": "一个简洁的本地化任务清单管理工具。A concise localization task list management tool.",
-  "version": "1.1.0",
+  "version": "1.0.1",
   "manifest_version": 3,
   "icons": {
     "16": "icons/todo_16.png",
@@ -16,5 +16,5 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions":["storage", "unlimitedStorage"]
+  "permissions": ["storage", "unlimitedStorage"]
 }

@@ -1,6 +1,6 @@
 {
   "name": "todo-list",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一个简洁的本地化任务清单管理工具。A concise localization task list management tool.",
   "author": "luxiangqiang <luxiangqiang@reta-inc.com>",
   "engines": {
